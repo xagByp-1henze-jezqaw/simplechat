@@ -46,6 +46,9 @@ cd /tmp/testdir/
 export npm_config_cache=/tmp/npm-cache
 export npm_config_prefix=/tmp/npm-global
 sudo npm install -g aws-cdk@latest
+
+cd /tmp/testdir/
+git clone https://github.com/xagByp-1henze-jezqaw/simplechat.git
 ```
 ```
 git clone https://github.com/keisskaws/simplechat
