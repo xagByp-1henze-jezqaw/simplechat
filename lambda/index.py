@@ -73,20 +73,17 @@ def lambda_handler(event, context):
         
         # invoke_model用のリクエストペイロード
         request_payload = {
-            "messages": bedrock_messages,
-            "inferenceConfig": {
-                "maxTokens": 512,
-                "stopSequences": [],
-                "temperature": 0.7,
-                "topP": 0.9
-            }
+                "messages": bedrock_messages,
+                 "inferenceConfig": {
+                     "maxTokens": 512,
+                     "stopSequences": [],
+                     "temperature": 0.7,
+                      "topP": 0.9
+                 }
         }
-        
-        print("Calling Bedrock invoke_model API with payload:", json.dumps(request_payload))
-        
         # === 外部 API 呼び出しに切り替え ===
-        api_url = "https://b9d0-34-125-152-58.ngrok-free.app/predict"
-        payload = json.dumps({"message": message}).encode("utf-8")
+        api_url = "https://48e3-35-197-51-138.ngrok-free.app/generate"
+        payload = json.dumps({"prompt": message}).encode("utf-8")
         req = Request(
             api_url,
             data=payload,
@@ -94,7 +91,7 @@ def lambda_handler(event, context):
         )
         with urlopen(req) as resp:
             result = json.loads(resp.read().decode("utf-8"))
-        assistant_response = result["text"]
+        assistant_response = result["generated_text"]
         messages.append({
             "role": "assistant",
             "content": assistant_response
