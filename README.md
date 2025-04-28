@@ -46,7 +46,8 @@ cd /tmp/testdir/
 export npm_config_cache=/tmp/npm-cache
 export npm_config_prefix=/tmp/npm-global
 sudo npm install -g aws-cdk@latest
-
+```
+```
 git clone https://github.com/xagByp-1henze-jezqaw/simplechat.git
 cd simplechat
 ```
@@ -62,10 +63,16 @@ npm install
 
 ### 3. AWS アカウントのブートストラップ（初回のみ）
 ```
+cdk bootstrap
+```
+```
 npx cdk bootstrap
 ```
 
 ### 4. CDK スタックのデプロイ
+```
+cdk deploy
+```
 ```
 npx cdk deploy
 ```
@@ -100,7 +107,9 @@ new BedrockChatbotStack(app, 'BedrockChatbotStack', {
 
 ### クリーンアップ
 プロジェクトのリソースを削除するには以下のコマンドを実行します
-
+```
+cdk destroy
+```
 
 ```
 npx cdk destroy
