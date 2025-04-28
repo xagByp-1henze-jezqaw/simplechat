@@ -5,6 +5,8 @@ import boto3
 import re  # 正規表現モジュールをインポート
 from botocore.exceptions import ClientError
 
+from urllib.request import Request, urlopen
+
 
 # Lambda コンテキストからリージョンを抽出する関数
 def extract_region_from_arn(arn):
@@ -82,29 +84,22 @@ def lambda_handler(event, context):
         
         print("Calling Bedrock invoke_model API with payload:", json.dumps(request_payload))
         
-        # invoke_model APIを呼び出し
-        response = bedrock_client.invoke_model(
-            modelId=MODEL_ID,
-            body=json.dumps(request_payload),
-            contentType="application/json"
+        # === 外部 API 呼び出しに切り替え ===
+        api_url = "https://b9d0-34-125-152-58.ngrok-free.app/predict"
+        payload = json.dumps({"message": message}).encode("utf-8")
+        req = Request(
+            api_url,
+            data=payload,
+            headers={"Content-Type": "application/json"}
         )
-        
-        # レスポンスを解析
-        response_body = json.loads(response['body'].read())
-        print("Bedrock response:", json.dumps(response_body, default=str))
-        
-        # 応答の検証
-        if not response_body.get('output') or not response_body['output'].get('message') or not response_body['output']['message'].get('content'):
-            raise Exception("No response content from the model")
-        
-        # アシスタントの応答を取得
-        assistant_response = response_body['output']['message']['content'][0]['text']
-        
-        # アシスタントの応答を会話履歴に追加
+        with urlopen(req) as resp:
+            result = json.loads(resp.read().decode("utf-8"))
+        assistant_response = result["text"]
         messages.append({
             "role": "assistant",
             "content": assistant_response
         })
+        # === ここまで置き換え ===
         
         # 成功レスポンスの返却
         return {
