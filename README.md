@@ -76,6 +76,7 @@ cdk deploy
 ```
 npx cdk deploy
 ```
+https://d18mgrofds025r.cloudfront.net
 
 ### 5. アプリケーションへのアクセス
 デプロイ出力に表示された CloudFront URL にアクセスしてアプリケーションを使用します。
